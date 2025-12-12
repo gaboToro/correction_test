@@ -53,6 +53,11 @@ jobs:
         aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
         aws-region: ${{ env.AWS_REGION }}
 
+    - name: Instalar y configurar Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.7
+
     - name: Inicializar Terraform
       run: terraform init
       working-directory: ./terraform
