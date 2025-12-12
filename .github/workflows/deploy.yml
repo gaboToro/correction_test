@@ -1,0 +1,68 @@
+name: CI/CD Docker y Terraform
+
+on:
+  push:
+    branches:
+      - main # Dispara el workflow en cada push a la rama principal
+
+env:
+  # Variables de Docker - ¡AJUSTA ESTO!
+  DOCKER_IMAGE: gabotor0/hello_world_correction
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_TOKEN: ${{ secrets.DOCKER_PASSWORD }} 
+
+  # ⚙️ Variables de AWS y Terraform
+  AWS_REGION: us-east-1 # 🚨 AJUSTA ESTO: Debe coincidir con 'variables.tf'
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: ⬇Checkout del código
+      uses: actions/checkout@v3
+
+    # --- FASE 1: Docker Build & Push ---
+    - name: Login a Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ env.DOCKER_USERNAME }}
+        password: ${{ env.DOCKER_TOKEN }}
+
+    - name: Obtener un Tag (usando el SHA del commit para unicidad)
+      id: get_tag
+      # El tag será el hash corto del commit (ej: a1b2c3d4)
+      run: echo "TAG=$(echo ${{ github.sha }} | cut -c1-8)" >> $GITHUB_OUTPUT 
+
+    - name: Construir y Empujar la Imagen de Docker
+      uses: docker/build-push-action@v4
+      with:
+        context: . # Usa el Dockerfile en la raíz
+        push: true
+        tags: ${{ env.DOCKER_IMAGE }}:${{ steps.get_tag.outputs.TAG }}
+
+    # --- FASE 2: Terraform Deploy ---
+    - name: Configurar las credenciales de AWS
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Inicializar Terraform
+      run: terraform init
+      working-directory: ./terraform
+
+    - name: Aplicar Terraform (Inyectando el nuevo tag de Docker)
+      run: |
+        # Inyecta el tag del commit al Launch Template para forzar una actualización del ASG
+        terraform apply -auto-approve \
+          -var="docker_image_tag=${{ steps.get_tag.outputs.TAG }}"
+      working-directory: ./terraform
+
+    - name: 📢 Obtener Outputs de Terraform
+      # Muestra la URL del Load Balancer en el log de Actions
+      run: terraform output load_balancer_dns_name
+      working-directory: ./terraform
