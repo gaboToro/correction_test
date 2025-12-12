@@ -1,0 +1,57 @@
+# ----------------------------------------
+# 1. Ignorar Archivos Generados por Sistema
+# ----------------------------------------
+.DS_Store
+.vscode/
+
+# ----------------------------------------
+# 2. Ignorar Archivos de Python / Flask
+# ----------------------------------------
+# Dependencias locales instaladas
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+.Python
+env
+venv
+pip-log.txt
+pip-delete-this-file.txt
+
+# Directorios de compilación y distros
+build/
+dist/
+*.egg-info/
+.tox/
+
+# Logs y bases de datos locales (si los hubiera)
+*.log
+*.sqlite3
+db.sqlite3
+
+# ----------------------------------------
+# 3. Ignorar Archivos de Docker
+# ----------------------------------------
+# El contexto de build no debe ignorarse si se usa COPY . .
+# Pero los artefactos como imágenes no existen en el filesystem.
+
+# ----------------------------------------
+# 4. Ignorar Archivos de Terraform (¡Crucial!)
+# ----------------------------------------
+# Archivos de estado (contienen información sensible)
+*.tfstate
+*.tfstate.*
+terraform.tfstate.d/
+
+# Planes de ejecución local (binarios)
+*.tfplan
+*.tfrun
+
+# Directorio de módulos/plugins descargados localmente
+.terraform/
+
+# Registros de choque y depuración
+crash.log
+
+# Archivos de caché
+.terraform.lock.hcl
