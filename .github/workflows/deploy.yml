@@ -4,7 +4,16 @@ on:
   push:
     branches:
       - main # Dispara el workflow en cada push a la rama principal
+    paths:
+      - 'backend/**'   # Solo si hay cambios en el backend
+      - 'Dockerfile' # O en el Dockerfile
 
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - 'Dockerfile'
 env:
   # Variables de Docker - ¡AJUSTA ESTO!
   DOCKER_IMAGE: gabotor0/hello_world_correction
@@ -42,6 +51,7 @@ jobs:
       with:
         context: . # Usa el Dockerfile en la raíz
         push: true
+        no-cache: true
         tags: ${{ env.DOCKER_IMAGE }}:${{ steps.get_tag.outputs.TAG }}
 
     # --- FASE 2: Terraform Deploy ---
