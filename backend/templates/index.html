@@ -1,47 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distributed Test Application</title>
+    <title>Aplicación Distribuida | Hola Mundo</title>
+    
     <style>
+        /* /* ESTILOS DEL CUERPO */ */
         body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: 'Verdana', sans-serif;
+            margin: 0;
+            background-color: #e0f7fa; /* Fondo Azul Pastel */
+            color: #004d40; /* Texto Verde Oscuro */
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
         }
-        .container {
+        /* /* ESTILOS DEL CONTENEDOR PRINCIPAL */ */
+        .card-minimal {
             background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            padding: 30px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
             margin: 0 auto;
         }
+        /* /* ESTILOS DEL TÍTULO */ */
         h1 {
-            color: #0056b3;
+            color: #00796b; /* Verde Azulado */
+            font-size: 1.8em;
+            margin-bottom: 10px;
         }
-        p {
-            font-size: 1.1em;
-        }
+        /* /* ESTILOS DE LA VERSIÓN */ */
         .version {
-            margin-top: 20px;
+            margin-top: 15px;
             font-weight: bold;
-            color: #007bff;
+            color: #009688; /* Verde Teñido */
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to my Distributed Application!</h1>
-        <p>This is the content of the web page served by my Flask backend.</p>
-        <p>Any changes here will be automatically reflected in the AWS infrastructure.</p>
-        <div class="version">
-            Version of the Content: 2.0.0
-            </div>
-        <p>Thanks for visiting!</p>
+    <div class="card-minimal">
+        <h1>¡Bienvenido al Backend Distribuido!</h1>
+        
+        <p>Esta página confirma el despliegue automático de Flask.</p>
+        
+        <p style="margin-top: 20px;">AWS Deploy OK.</p>
     </div>
 </body>
 </html>
