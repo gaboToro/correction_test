@@ -1,3 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket         = "terraform-state-correction-test"
+    key            = "asg-app/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-locks"
+    encrypt        = true
+  }
+}
+
 # Proveedor AWS
 provider "aws" {
   region = var.region
@@ -165,13 +175,11 @@ resource "aws_autoscaling_group" "app_asg" {
   }
 
   instance_refresh {
-  strategy = "Rolling"
-  preferences {
-    min_healthy_percentage = 50
-  }
-}
-
-
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
+  } 
   tag {
     key                 = "Name"
     value               = "AppInstance"

@@ -59,7 +59,7 @@ jobs:
         terraform_version: 1.5.7
 
     - name: Inicializar Terraform
-      run: terraform init
+      run: terraform init -reconfigure
       working-directory: ./terraform
 
     - name: Aplicar Terraform (Inyectando el nuevo tag de Docker)
