@@ -152,7 +152,7 @@ resource "aws_launch_template" "app_lt" {
     # ¡Reemplaza 'tu-usuario-docker' con tu usuario de Docker Hub o el repositorio que uses!
     # El tag se pasa como variable de Terraform, que se actualizará con GitHub Actions.
     sudo docker pull gabotor0/hello_world_correction:${var.docker_image_tag}
-    sudo docker run -d -p 80:80 gabotor0/hello_world_correction:${var.docker_image_tag}
+    sudo docker run -d -p 80:80 -e IMAGE_TAG=${var.docker_image_tag} gabotor0/hello_world_correction:${var.docker_image_tag}
   EOF
   )
 }
