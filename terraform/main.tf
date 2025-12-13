@@ -164,6 +164,14 @@ resource "aws_autoscaling_group" "app_asg" {
     version = "$Latest" # Usa la última versión del Launch Template
   }
 
+  instance_refresh {
+  strategy = "Rolling"
+  preferences {
+    min_healthy_percentage = 50
+  }
+}
+
+
   tag {
     key                 = "Name"
     value               = "AppInstance"

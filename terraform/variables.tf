@@ -18,4 +18,10 @@ variable "instance_type" {
 
 variable "docker_image_tag" {
   description = "Etiqueta de la imagen de Docker a desplegar"
+  type = string
+
+  validation {
+    condition = length(var.docker_image_tag) > 0
+    error_message = "docker_image_tag no puede estar vacio"
+  }
 }
